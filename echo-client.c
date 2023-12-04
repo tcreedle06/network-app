@@ -6,18 +6,18 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<signal.h>
+#include <ncurses.h> // importing ncurses to separate text input from conversation log
 
 #define MAXLINE 1024
-#define SERV_PORT 49049
-#define bool int
+#define SERV_PORT 25565
+/*#define bool int
 #define true 1
-#define false 0
+#define false 0*/
 
 #define SA struct sockaddr
 
-void str_cli(FILE *fp, int sockfd);
+void str_cli(WINDOW *win, int sockfd); // cli now uses WINDOW from ncurses
 void CatchInterrupt (int signum);
-
 
 int main(int argc, char **argv)
 {
@@ -45,34 +45,46 @@ int main(int argc, char **argv)
    if(connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) < 0)
       printf("connect error\n");
 
-   str_cli(stdin, sockfd);
+   // Initialize NCurses
+   initscr();
+   cbreak(); // Line buffering disabled
+   echo(); // Don't echo while we do getch
+   keypad(stdscr, TRUE); // Enable special keys
+
+   WINDOW *win = newwin(10, 50, 1, 1); // Example window size
+    
+   str_cli(win, sockfd); // Pass the window to your function
+   
+   endwin(); // End NCurses
    exit(0);
 }
 
-void str_cli(FILE *fp, int sockfd)
-{
+void str_cli(WINDOW *win, int sockfd) {
    char sendline[MAXLINE];
    char recvline[MAXLINE];
    bool done = false;
-   
-   sendline[0] = '\0';
-   while(!done && fgets(sendline, MAXLINE, fp) != NULL) {
-      //remove the newline...
-      sendline[strlen(sendline)-1] = '\0';
-      printf("Client (from stdin): >%s<\n",sendline);
-      write(sockfd, sendline, strlen(sendline)+1);
-      if(strcmp(sendline,"exit") == 0)
-         done = true;
-      else {
-         if(read(sockfd, recvline, MAXLINE)==0)
-            printf("str_cli: server terminated prematurely\n");
+
+   while (!done) {
+      sendline[0] = '\0';
+      if (wgetnstr(win, sendline, MAXLINE) == ERR)
+         break;
+
+      wprintw(win, "Client (from stdin): >%s<\n", sendline);
+      wrefresh(win);
+      write(sockfd, sendline, strlen(sendline) + 1);
+
+      if (strcmp(sendline, "exit") == 0)
+         break;
+
+      if (read(sockfd, recvline, MAXLINE) == 0) {
+         wprintw(win, "str_cli: server terminated prematurely\n");
+         break;
       }
-      //fputs(recvline, stdout);  use this for exact output to screen
-      printf("Client (from server): %s\n",recvline);  //use this if readable and want to end
-                                   //the line with \n
+
+      wprintw(win, "Client (from server): %s\n", recvline);
+      wrefresh(win);
    }
 }
-
 
 
 void CatchInterrupt (int signum) 

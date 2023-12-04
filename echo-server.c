@@ -11,7 +11,7 @@
 
 #define MAXLINE 1024
 #define LISTENQ 1024
-#define SERV_PORT 49049
+#define SERV_PORT 25565
 #define bool int
 #define true 1
 #define false 0
@@ -60,7 +60,6 @@ int main(int argc, char **argv)
       }
       //parent will end up here, the child will exit somewhere else.
       close(connfd);
-
    }
    
    return 0; 
