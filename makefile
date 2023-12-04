@@ -2,20 +2,20 @@ CC = gcc
 CFLAGS = -Wall -Wextra
 LDFLAGS = -lncurses
 
-all: echoclient echoserver
+all: echo-client echo-server
 	@echo Compilation complete
 
-echoclient: echoclient.o
-	$(CC) $(CFLAGS) -o echoclient echoclient.o $(LDFLAGS)
+echo-client: echo-client.o
+	$(CC) $(CFLAGS) -o echo-client echo-client.o $(LDFLAGS)
 
-echoserver: echoserver.o
-	$(CC) $(CFLAGS) -o echoserver echoserver.o $(LDFLAGS)
+echo-server: echo-server.o
+	$(CC) $(CFLAGS) -o echo-server echo-server.o $(LDFLAGS)
 
-echoclient.o: echoclient.c
-	$(CC) $(CFLAGS) -c echoclient.c
+echo-client.o: echo-client.c
+	$(CC) $(CFLAGS) -c echo-client.c
 
-echoserver.o: echoserver.c
-	$(CC) $(CFLAGS) -c echoserver.c
+echo-server.o: echo-server.c
+	$(CC) $(CFLAGS) -c echo-server.c
 
 clean:
 	rm *.o
