@@ -60,7 +60,6 @@ int main(int argc, char **argv)
       }
       //parent will end up here, the child will exit somewhere else.
       close(connfd);
-
    }
    
    return 0; 
