@@ -157,7 +157,7 @@ parameter is used, only the status of that channel is displayed.
 
 ### KICK Command
 •Command: KICK  
-•Parameters: <channel> <user> [<comment>]  
+•Parameters: ```<channel> <user> [<comment>]```
 •Example: KICK Melbourne Matthew  
 •Possible server numeric replies:  
 •ERR_NEEDMOREPARAMS  
