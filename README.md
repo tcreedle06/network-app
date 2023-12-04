@@ -170,12 +170,12 @@ The KICK command can be used to forcibly remove a user from a channel. It 'kicks
 valid (i.e. the sender is actually a channel operator) before removing the victim from the channel.
 
 ### NICK Command
-•Command: NICK 
-•Parameters: <nickname> 
-•Example: NICK Wiz 
-•Possible numeric server replies: 
-•ERR_NONICKNAMEGIVEN 
-•ERR_NICKCOLLISION 
+•Command: NICK  
+•Parameters: ```<nickname>```   
+•Example: NICK Wiz  
+•Possible numeric server replies:  
+•ERR_NONICKNAMEGIVEN  
+•ERR_NICKCOLLISION  
 
 NICK message is used to give user a nickname or change the previous one. If a NICK message arrives at a server
 which already knows about an identical nickname for another client, a nickname collision occurs
