@@ -7,12 +7,12 @@ Client – when staring the client app, provide an username and the server name.
 A client must use the USER command below to connect to the sever. The server maintains a list of unique names. If a names is already taken and error message will be sent back to the client. The server will also send back an error if there are not enough parameters provided.
 
 ### USER Command
-Command: USER  
-Parameters: <username> <hostname> <servername> <realname>  
-Example: USER guest tolmoon tolsun Ronnie Reagan 
-Possible numeric server replies: 
-    ERR_NEEDMOREPARAMS 
-    ERR_ALREADYREGISTRED 
+•Command: USER 
+•Parameters:```<username> <hostname> <servername> <realname>```  
+•Example: USER guest tolmoon tolsun Ronnie Reagan 
+•Possible numeric server replies: 
+•ERR_NEEDMOREPARAMS 
+•ERR_ALREADYREGISTRED 
 
 The USER message is used at the beginning of connection to specify the username, hostname, servername and
 realname of the new user. The hostname is the name of the client’s machine.
@@ -69,7 +69,7 @@ Descriptions of messages related to connection registration and deregistration.
 
 ### USER Command
 •Command: USER 
-•Parameters: <username> <hostname> <servername> <realname> 
+•Parameters:```<username> <hostname> <servername> <realname>```  
 •Example: USER guest tolmoon tolsun Ronnie Reagan 
 •Possible numeric server replies: 
 •ERR_NEEDMOREPARAMS 
@@ -80,7 +80,7 @@ realname of the new user.
 
 ### QUIT Command
 •Command: QUIT 
-•Parameters: [<quit message>] 
+•Parameters: ```[<quit message>]```  
 •Example: QUIT got to go, goodbye! A client session is ended with a quit message. The server must close
 the connection to a client which sends a QUIT message. If a "Quit Message" is given, this will be sent
 instead of the default message, the nickname. 
@@ -92,7 +92,7 @@ Messages related to managing channels.
 
 ### JOIN Command
 •Command: JOIN 
-•Parameters: <channel>{,<channel>} 
+•Parameters:```<channel>{,<channel>}```  
 •Example: JOIN #foobar 
 •Possible numeric server replies: 
 •ERR_CHANNELISFULL 
@@ -106,7 +106,7 @@ RPL_NAMREPLY), which must include the user joining.
 
 ### PART Command
 •Command: PART 
-•Parameters: <channel>{,<channel>} 
+•Parameters:```<channel>{,<channel>}```  
 •Example: PART #twilight_zone, #networking-study-group 
 •Possible numeric server replies: 
 •ERR_NEEDMOREPARAMS 
@@ -118,7 +118,7 @@ channels listed in the parameter string.
 
 ### TOPIC Command
 •Command: TOPIC 
-•Parameters: <channel> [<topic>] 
+•Parameters:```<channel> [<topic>]```  
 •Example: 
 •Possible numeric server replies: 
 •ERR_NEEDMOREPARAMS 
@@ -131,7 +131,7 @@ if there is no <topic> given. If the <topic> parameter is present, the topic for
 
 ### NAMES Command
 •Command: NAMES 
-•Parameters: [<channel>{,<channel>}] 
+•Parameters: ```[<channel>{,<channel>}]```  
 •Example: NAMES #twilight_zone,#42 
 •Possible numeric server replies: 
 •RPL_NAMREPLY 
@@ -144,7 +144,7 @@ If no <channel> parameter is given, a list of all channels and their occupants i
 
 ### LIST Command
 •Command: LIST 
-•Parameters: [<channel>{,<channel>} [<server>]] 
+•Parameters: ```[<channel>{,<channel>} [<server>]]```  
 •Example: LIST #twilight_zone,#42 
 •Possible numeric server replies: 
 •ERR_NOSUCHSERVER 
@@ -157,7 +157,7 @@ parameter is used, only the status of that channel is displayed.
 
 ### KICK Command
 •Command: KICK  
-•Parameters: ```<channel> <user> [<comment>]```
+•Parameters: ```<channel> <user> [<comment>]```  
 •Example: KICK Melbourne Matthew  
 •Possible server numeric replies:  
 •ERR_NEEDMOREPARAMS  
