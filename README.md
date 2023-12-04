@@ -156,14 +156,14 @@ If no <channel> parameter is given, the list message is used to list channels an
 parameter is used, only the status of that channel is displayed.
 
 ### KICK Command
-•Command: KICK 
-•Parameters: <channel> <user> [<comment>] 
-•Example: KICK Melbourne Matthew 
-•Possible server numeric replies: 
-•ERR_NEEDMOREPARAMS 
-•ERR_NOSUCHCHANNEL 
-•ERR_CHANOPRIVSNEEDED 
-•ERR_NOTONCHANNEL 
+•Command: KICK  
+•Parameters: <channel> <user> [<comment>]  
+•Example: KICK Melbourne Matthew  
+•Possible server numeric replies:  
+•ERR_NEEDMOREPARAMS  
+•ERR_NOSUCHCHANNEL  
+•ERR_CHANOPRIVSNEEDED  
+•ERR_NOTONCHANNEL  
 
 The KICK command can be used to forcibly remove a user from a channel. It 'kicks them out' of the channel
 (forced PART). Only a channel operator may kick another user out of a channel. The server must check that it is
