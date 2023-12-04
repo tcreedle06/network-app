@@ -91,13 +91,13 @@ Commands: Channel Operations
 Messages related to managing channels. 
 
 ### JOIN Command
-•Command: JOIN 
-•Parameters:```<channel>{,<channel>}```  
-•Example: JOIN #foobar 
-•Possible numeric server replies: 
-•ERR_CHANNELISFULL 
-•ERR_NOSUCHCHANNEL 
-•ERR_TOOMANYCHANNELS 
+•Command: JOIN  
+•Parameters:```<channel>{,<channel>}```   
+•Example: JOIN #foobar   
+•Possible numeric server replies:   
+•ERR_CHANNELISFULL  
+•ERR_NOSUCHCHANNEL   
+•ERR_TOOMANYCHANNELS  
 
 The JOIN command is used by client to start listening a specific channel. Once a user has joined a channel, they
 receive notice about all commands their server receives which affect the channel. If a JOIN is successful, the user
