@@ -10,13 +10,10 @@
 
 #define MAXLINE 1024
 #define SERV_PORT 25565
-/*#define bool int
-#define true 1
-#define false 0*/
 
 #define SA struct sockaddr
 
-void str_cli(WINDOW *win, int sockfd); // cli now uses WINDOW from ncurses
+void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd);
 void CatchInterrupt (int signum);
 
 int main(int argc, char **argv)
@@ -48,41 +45,53 @@ int main(int argc, char **argv)
    // Initialize NCurses
    initscr();
    cbreak(); // Line buffering disabled
-   echo(); // Don't echo while we do getch
    keypad(stdscr, TRUE); // Enable special keys
+   noecho(); // Don't echo while we do getch
 
-   WINDOW *win = newwin(10, 50, 1, 1); // Example window size
-    
-   str_cli(win, sockfd); // Pass the window to your function
-   
+   int inputWinHeight = 3; // Height of the input window (including line)
+   int outputWinHeight = LINES - inputWinHeight - 1; // Rest of the space for output window
+
+   // Create the output window
+   WINDOW *outputWin = newwin(outputWinHeight, COLS, 0, 0);
+   box(outputWin, 0, 0);
+   scrollok(outputWin, TRUE); // Allow scrolling
+
+   // Create the input window at the bottom
+   WINDOW *inputWin = newwin(inputWinHeight, COLS, outputWinHeight, 0);
+   box(inputWin, 0, 0);
+   mvwhline(inputWin, 1, 1, ACS_HLINE, COLS - 2); // Horizontal line
+
+   wrefresh(outputWin);
+   wrefresh(inputWin);
+
+   str_cli(outputWin, inputWin, sockfd); // Pass both windows to your function
+
    endwin(); // End NCurses
    exit(0);
 }
 
-void str_cli(WINDOW *win, int sockfd) {
+void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd) {
    char sendline[MAXLINE];
    char recvline[MAXLINE];
-   bool done = false;
 
-   while (!done) {
-      sendline[0] = '\0';
-      if (wgetnstr(win, sendline, MAXLINE) == ERR)
-         break;
+   while (1) {
+      // Get user input
+      wmove(inputWin, 1, 1); // Move cursor to input window
+      echo();
+      wgetnstr(inputWin, sendline, MAXLINE - 1);
+      noecho();
 
-      wprintw(win, "Client (from stdin): >%s<\n", sendline);
-      wrefresh(win);
+      // Display user input in output window
+      wprintw(outputWin, "Client: %s\n", sendline);
+      wrefresh(outputWin);
+
+      // Send the user input to the server and get the response
       write(sockfd, sendline, strlen(sendline) + 1);
+      read(sockfd, recvline, MAXLINE);
 
-      if (strcmp(sendline, "exit") == 0)
-         break;
-
-      if (read(sockfd, recvline, MAXLINE) == 0) {
-         wprintw(win, "str_cli: server terminated prematurely\n");
-         break;
-      }
-
-      wprintw(win, "Client (from server): %s\n", recvline);
-      wrefresh(win);
+      // Display server response in output window below previous messages
+      wprintw(outputWin, "Server: %s\n", recvline);
+      wrefresh(outputWin);
    }
 }
 
