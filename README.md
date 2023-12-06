@@ -7,7 +7,7 @@ Client – when staring the client app, provide an username and the server name.
 A client must use the USER command below to connect to the sever. The server maintains a list of unique names. If a names is already taken and error message will be sent back to the client. The server will also send back an error if there are not enough parameters provided.
 
 ### USER Command
-•Command: USER 
+•Command: USER   
 •Parameters:```<username> <hostname> <servername> <realname>```  
 •Example: USER guest tolmoon tolsun Ronnie Reagan  
 •Possible numeric server replies:  

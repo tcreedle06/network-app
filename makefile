@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall
-LDFLAGS = -lncurses
+LDFLAGS = -lcurses
 
 all: echo-client echo-server
 	@echo Compilation complete

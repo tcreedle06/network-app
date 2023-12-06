@@ -78,7 +78,7 @@ void str_echo(int sockfd)
       while(!done && (n = read(sockfd, buff, MAXLINE) > 0)) {
           printf("Server read: %s size:%ld\n",buff,strlen(buff));
           if(strcmp(buff,"exit") == 0)
-             done = true;
+            done = true;
           else
              write(sockfd,buff,strlen(buff)+1);
       }

@@ -6,7 +6,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<signal.h>
-#include <ncurses.h> // importing ncurses to separate text input from conversation log
+#include <curses.h> // importing ncurses to separate text input from conversation log
 
 #define MAXLINE 1024
 #define SERV_PORT 25565
@@ -41,32 +41,28 @@ int main(int argc, char **argv)
 
    if(connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) < 0)
       printf("connect error\n");
-
+   
    // Initialize NCurses
    initscr();
-   cbreak(); // Line buffering disabled
-   keypad(stdscr, TRUE); // Enable special keys
-   noecho(); // Don't echo while we do getch
+   cbreak();
+   noecho();
 
    int inputWinHeight = 3; // Height of the input window (including line)
    int outputWinHeight = LINES - inputWinHeight - 1; // Rest of the space for output window
 
-   // Create the output window
    WINDOW *outputWin = newwin(outputWinHeight, COLS, 0, 0);
-   box(outputWin, 0, 0);
-   scrollok(outputWin, TRUE); // Allow scrolling
+   scrollok(outputWin, TRUE);
 
-   // Create the input window at the bottom
    WINDOW *inputWin = newwin(inputWinHeight, COLS, outputWinHeight, 0);
-   box(inputWin, 0, 0);
-   mvwhline(inputWin, 1, 1, ACS_HLINE, COLS - 2); // Horizontal line
+   mvwhline(inputWin, 0, 0, ACS_HLINE, COLS); // Horizontal line at the top
 
    wrefresh(outputWin);
    wrefresh(inputWin);
 
-   str_cli(outputWin, inputWin, sockfd); // Pass both windows to your function
+   str_cli(inputWin, outputWin, sockfd); // Pass both windows to your function
 
    endwin(); // End NCurses
+   close(sockfd);
    exit(0);
 }
 
@@ -74,12 +70,17 @@ void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd) {
    char sendline[MAXLINE];
    char recvline[MAXLINE];
 
-   while (1) {
+   bool done = false;
+   while (!done) {
       // Get user input
       wmove(inputWin, 1, 1); // Move cursor to input window
       echo();
       wgetnstr(inputWin, sendline, MAXLINE - 1);
       noecho();
+
+      // Clear input area
+      werase(inputWin);
+      mvwhline(inputWin, 0, 0, ACS_HLINE, COLS); // Redraw the horizontal line
 
       // Display user input in output window
       wprintw(outputWin, "Client: %s\n", sendline);
@@ -88,6 +89,9 @@ void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd) {
       // Send the user input to the server and get the response
       write(sockfd, sendline, strlen(sendline) + 1);
       read(sockfd, recvline, MAXLINE);
+
+      if (strcmp(sendline, "exit") == 0 /*&& strcmp(recvline, "exit") == 0*/)
+         done = true;
 
       // Display server response in output window below previous messages
       wprintw(outputWin, "Server: %s\n", recvline);
