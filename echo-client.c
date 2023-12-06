@@ -74,6 +74,8 @@ void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd) {
 
    bool done = false;
    while (!done) {
+      if (debug) wprintw(outputWin, "Looping...\n");
+      wrefresh(outputWin);
       // Get user input
       wmove(inputWin, 1, 1); // Move cursor to input window
       echo();
