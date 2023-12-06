@@ -13,6 +13,8 @@
 
 #define SA struct sockaddr
 
+bool debug = false; // true to turn on debugging features
+
 void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd);
 void CatchInterrupt (int signum);
 
@@ -83,8 +85,11 @@ void str_cli(WINDOW *inputWin, WINDOW *outputWin, int sockfd) {
       mvwhline(inputWin, 0, 0, ACS_HLINE, COLS); // Redraw the horizontal line
 
       // Display user input in output window
-      wprintw(outputWin, "Client: %s\n", sendline);
-      wrefresh(outputWin);
+      if (debug)
+      {
+         wprintw(outputWin, "Client: %s\n", sendline);
+         wrefresh(outputWin);
+      }
 
       // Send the user input to the server and get the response
       write(sockfd, sendline, strlen(sendline) + 1);
